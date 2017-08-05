@@ -40,16 +40,27 @@ div.appendChild(renderer.domElement);
 
 var playerTexture;
 var loader = new THREE.TextureLoader();
-loader.crossOrigin = true;
-loader.load('octave1.jpg', function ( texture ) {
-  playerTexture = texture;
-})
+
+function load(){
+  loader.load('octave1.jpg', function ( texture, function(){
+      playerTexture = texture;
+      if(playerTexture == undefined){
+        load();
+      }
+      else{
+        game = new Game(scene, camera);
+
+      }
+
+
+  })
+}
+load();
 
 
 var game;
 setTimeout(function(){
-  game = new Game(scene, camera);
-}, 10)
+  
 
 
 
