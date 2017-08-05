@@ -16,6 +16,7 @@ function Game(scene, camera){
 		var val = this.player.update();
 		if(val.hit){
 			this.floor.addColor(this.player.position.x, this.player.position.z, this.player.pathColor)
+			this.floor.addVelocity(this.player.position.x, this.player.position.z, this.player.velocity);
 		}
 		this.floor.update();
 		if(this.player.changed){
