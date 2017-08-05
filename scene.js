@@ -48,7 +48,7 @@ loader.load('octave1.jpg', function ( texture ) {
 var game;
 setTimeout(function(){
   game = new Game(scene, camera);
-}, 100)
+}, 1000)
 
 
 
