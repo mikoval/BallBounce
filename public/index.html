@@ -1,0 +1,56 @@
+<html>
+<head>
+	<style>
+	body{margin:0px;}
+	</style>
+</head>
+<body>
+<div id = "container" ></div>
+<script src="three.js"></script>
+<script id="AddDensityShader" type="shader-code">
+        uniform vec2 res;//The width and height of our screen
+        uniform sampler2D bufferTexture;//Our input texture
+        uniform vec4 densitySource;
+        uniform float densitySize;
+        void main() {
+            vec2 pixel = gl_FragCoord.xy / res.xy;
+            gl_FragColor = texture2D( bufferTexture, pixel );
+            
+            
+                
+            float dist = distance(densitySource.zw,gl_FragCoord.xy);
+            if(densitySource.y == 1.0){
+
+                gl_FragColor.r +=  2.0/(dist*dist); 
+                if(gl_FragColor.r >1.0) 
+                	gl_FragColor.r = 1.0;
+            }
+            else if(densitySource.y == 2.0){
+                gl_FragColor.g += 2.0/(dist*dist);
+                if(gl_FragColor.g >1.0) 
+                	gl_FragColor.g = 1.0;  
+            }
+            else if(densitySource.y == 3.0){
+                gl_FragColor.b += 2.0/( dist*dist);
+                if(gl_FragColor.b >1.0) 
+                	gl_FragColor.b = 1.0;
+            }
+
+         
+                   
+                    
+           
+        }
+    </script>
+
+
+<script
+  src="http://code.jquery.com/jquery-3.2.1.min.js"
+  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+  crossorigin="anonymous"></script>
+<script src="game.js"></script>
+<script src="player.js"></script>
+<script src="floor.js"></script>
+<script src="scene.js"></script>
+</body>	
+</html>
