@@ -1,5 +1,5 @@
-var fluidWidth = 512;
-var fluidHeight = 512;
+var fluidWidth = 256;
+var fluidHeight = 256;
  dt = 1/60;
 dx = 1.0;
 dy = 1.0;
@@ -319,7 +319,7 @@ function Floor(z, color){
             this.diffuseMaterial.uniforms.alpha.value = -1 ;
             this.diffuseMaterial.uniforms.rBeta.value = 0.25;
             this.diffuseMaterial.uniforms.b.value = this.divergenceTexture;
-            for (var i = 0; i <20; i ++ ){
+            for (var i = 0; i <50; i ++ ){
                 this.diffuseMaterial.uniforms.x.value = this.pressureTexture;
                 renderer.render(this.diffuseScene,this.fluidCamera,this.pressureTexture2,true);
                 this.swapPressure();

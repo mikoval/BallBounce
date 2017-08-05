@@ -251,15 +251,15 @@
             float dist = distance(densitySource.zw,gl_FragCoord.xy);
             if(densitySource.y == 1.0){
 
-                gl_FragColor.r +=  2.0/(dist*dist); 
+                gl_FragColor.r +=  0.5/(dist*dist); 
                 
             }
             else if(densitySource.y == 2.0){
-                gl_FragColor.g += 2.0/(dist*dist);
+                gl_FragColor.g += 0.5/(dist*dist);
                 
             }
             else if(densitySource.y == 3.0){
-                gl_FragColor.b += 2.0/( dist*dist);
+                gl_FragColor.b += 0.5/( dist*dist);
                 
             }
              

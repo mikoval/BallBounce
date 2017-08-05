@@ -23,7 +23,7 @@ function Player(z, color){
 
 	this.update= function(){
 		var x = Math.random();
-		if(x<.03){
+		if(x<.01){
 			this.pathColor = Math.floor(Math.random()*3 ) + 1.0;
 		}
 		this.inputs()
