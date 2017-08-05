@@ -49,7 +49,7 @@ function Floor(z, color){
 
 		this.addVelocityMaterial.uniforms.velocitySource.value.x = -10 * vel.x
 
-        this.addVelocityMaterial.uniforms.velocitySource.value.y =  -10 * vel.y
+        this.addVelocityMaterial.uniforms.velocitySource.value.y =  vel.z
         
 
         this.addVelocityMaterial.uniforms.velocitySource.value.z = ((x)/50 + 0.5) * fluidWidth;;
