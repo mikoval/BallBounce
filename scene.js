@@ -40,15 +40,17 @@ div.appendChild(renderer.domElement);
 
 var playerTexture;
 var loader = new THREE.TextureLoader();
-loader.load('octave1.jpg', function ( texture ) {
-  playerTexture = texture;
+loader.load('octave1.jpg', function ( texture, function(){
+    playerTexture = texture;
+    game = new Game(scene, camera);
+
+
 })
 
 
 var game;
 setTimeout(function(){
-  game = new Game(scene, camera);
-}, 1000)
+  
 
 
 
