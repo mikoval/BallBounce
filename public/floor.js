@@ -9,10 +9,10 @@ function Floor(z, color){
 	this.divergenceTexture = new THREE.WebGLRenderTarget( fluidWidth , fluidHeight, {depthBuffer: false, stencilBuffer:false,  minFilter: THREE.LinearFilter, magFilter: THREE.NearestFilter,type: THREE.HalfFloatType});
 	this.pressureTexture = new THREE.WebGLRenderTarget( fluidWidth , fluidHeight, {depthBuffer: false, stencilBuffer:false, minFilter: THREE.LinearFilter, magFilter: THREE.NearestFilter,type: THREE.HalfFloatType});
 	this.pressureTexture2 = new THREE.WebGLRenderTarget( fluidWidth , fluidHeight, {depthBuffer: false, stencilBuffer:false, minFilter: THREE.LinearFilter, magFilter: THREE.NearestFilter,type: THREE.HalfFloatType});
-	this.densityA = new THREE.WebGLRenderTarget( fluidWidth , fluidHeight, {depthBuffer: false, stencilBuffer:false, minFilter: THREE.LinearFilter, magFilter: THREE.NearestFilter,type: THREE.HalfFloatType,});
-	this.densityB = new THREE.WebGLRenderTarget( fluidWidth , fluidHeight, {depthBuffer: false, stencilBuffer:false, minFilter: THREE.LinearFilter, magFilter: THREE.NearestFilter, type: THREE.HalfFloatType} );
+	this.densityA = new THREE.WebGLRenderTarget( fluidWidth , fluidHeight, {depthBuffer: false, stencilBuffer:false, minFilter: THREE.LinearFilter, magFilter: THREE.NearestFilter,type: THREE.FloatType,});
+	this.densityB = new THREE.WebGLRenderTarget( fluidWidth , fluidHeight, {depthBuffer: false, stencilBuffer:false, minFilter: THREE.LinearFilter, magFilter: THREE.NearestFilter, type: THREE.FloatType} );
 	var geometry = new THREE.PlaneGeometry( 50, 50 );
-	var material = new THREE.MeshPhongMaterial({map: this.densityA});
+	var material = new THREE.MeshPhongMaterial({map: this.densityA.texture});
 	var mesh = new THREE.Mesh( geometry, material );
 	
 	mesh.rotateX(-3.14/2);
@@ -23,7 +23,7 @@ function Floor(z, color){
 	this.obj = mesh;
 	this.update = function(){
 		this.fluidUpdate();
-		this.obj.material.map = this.densityA;
+		this.obj.material.map = this.densityA.texture;
 
 	}
 	this.addColor = function(x, y, color){
@@ -39,7 +39,7 @@ function Floor(z, color){
         this.addDensityMaterial.uniforms.densitySource.value.w = (1.0 - ((y)/50 + 0.5)) *  fluidHeight;
 
 
-		this.addDensityMaterial.uniforms.bufferTexture.value = this.densityA;
+		this.addDensityMaterial.uniforms.bufferTexture.value = this.densityA.texture;
 
 		renderer.render(this.addDensityScene,this.fluidCamera,this.densityB,true);
 		this.swapDensity();
@@ -57,7 +57,7 @@ function Floor(z, color){
 
 
         //add velocity
-        this.addVelocityMaterial.uniforms.bufferTexture.value = this.velocityA;
+        this.addVelocityMaterial.uniforms.bufferTexture.value = this.velocityA.texture;
         renderer.render(this.addVelocityScene,this.fluidCamera,this.velocityB,true);
         this.swapVelocity();
 	}
@@ -77,8 +77,8 @@ function Floor(z, color){
 
     this.diffuseMaterial = new THREE.ShaderMaterial( {
         uniforms: {
-            x: { type: "t", value: this.velocityA },
-            b: { type: "t", value: this.velocityA },
+            x: { type: "t", value: this.velocityA.texture },
+            b: { type: "t", value: this.velocityA.texture },
             res : {type: 'v2',value:new THREE.Vector2(fluidWidth,fluidHeight)},
             alpha: { type: "f", value: 0.0 },
             rBeta: { type: "f", value: 0.0 },
@@ -94,7 +94,7 @@ function Floor(z, color){
 
     this.addVelocityMaterial = new THREE.ShaderMaterial( {
         uniforms: {
-         bufferTexture: { type: "t", value: this.velocityA },
+         bufferTexture: { type: "t", value: this.velocityA.texture },
          res : {type: 'v2',value:new THREE.Vector2(fluidWidth,fluidHeight)},
          velocitySource: {type:"v4",value:new THREE.Vector4(0,0,0,0)},
          velocitySize: {type:"f",value:3.0},
@@ -111,7 +111,7 @@ function Floor(z, color){
 
     this.addDensityMaterial = new THREE.ShaderMaterial( {
         uniforms: {
-         bufferTexture: { type: "t", value: this.densityA },
+         bufferTexture: { type: "t", value: this.densityA.texture },
          res : {type: 'v2',value:new THREE.Vector2(fluidWidth,fluidHeight)},
          densitySource: {type:"v4",value:new THREE.Vector4(0,0,0,0)},
          densitySize: {type:"f",value:3.0},
@@ -129,8 +129,8 @@ function Floor(z, color){
 
     this.advectMaterial = new THREE.ShaderMaterial( {
         uniforms: {
-            velocity: { type: "t", value: this.velocityA },
-            quantity: { type: "t", value: this.velocityA },
+            velocity: { type: "t", value: this.velocityA.texture },
+            quantity: { type: "t", value: this.velocityA.texture },
             dx: { type: "f", value: 0.0 },
             timestep: { type: "f", value: 0.0 },
 
@@ -148,7 +148,7 @@ function Floor(z, color){
 
     this.divergenceMaterial = new THREE.ShaderMaterial( {
         uniforms: {
-            velocity: { type: "t", value: this.velocityA },
+            velocity: { type: "t", value: this.velocityA.texture },
             res : {type: 'v2',value:new THREE.Vector2(fluidWidth,fluidHeight)},
         },
         fragmentShader: document.getElementById( 'DivergenceShader' ).innerHTML
@@ -162,8 +162,8 @@ function Floor(z, color){
 
     this.gradientMaterial = new THREE.ShaderMaterial( {
         uniforms: {
-            velocity: { type: "t", value: this.velocityA },
-            pressure: { type: "t", value: this.velocityA },
+            velocity: { type: "t", value: this.velocityA.texture },
+            pressure: { type: "t", value: this.velocityA.texture },
             res : {type: 'v2',value:new THREE.Vector2(fluidWidth,fluidHeight)},
         },
         fragmentShader: document.getElementById( 'GradientShader' ).innerHTML
@@ -178,7 +178,7 @@ function Floor(z, color){
 
     this.boundaryMaterial = new THREE.ShaderMaterial( {
         uniforms: {
-            texture: { type: "t", value: this.velocityA },
+            texture: { type: "t", value: this.velocityA.texture },
             res : {type: 'v2',value:new THREE.Vector2(fluidWidth,fluidHeight)},
             scale: { type: "f", value: 0.0 },
         },
@@ -196,7 +196,7 @@ function Floor(z, color){
 
     this.showVelocityMaterial = new THREE.ShaderMaterial( {
         uniforms: {
-         bufferTexture: { type: "t", value: this.velocityA },
+         bufferTexture: { type: "t", value: this.velocityA.texture },
          
          res : {type: 'v2',value:new THREE.Vector2(fluidWidth,fluidHeight)},
 
@@ -265,20 +265,20 @@ function Floor(z, color){
     }
     this.advectVelocity = function(){
             this.boundaryMaterial.uniforms.scale.value = -1.0;
-            this.boundaryMaterial.uniforms.texture.value = this.velocityA;
+            this.boundaryMaterial.uniforms.texture.value = this.velocityA.texture;
             renderer.render(this.boundaryScene,this.fluidCamera,this.velocityB,true);
             this.swapVelocity();
 
             this.advectMaterial.uniforms.timestep.value = dt;
             this.advectMaterial.uniforms.dx.value = dx;
-            this.advectMaterial.uniforms.quantity.value = this.velocityA;
-            this.advectMaterial.uniforms.velocity.value = this.velocityA;
+            this.advectMaterial.uniforms.quantity.value = this.velocityA.texture;
+            this.advectMaterial.uniforms.velocity.value = this.velocityA.texture;
             
             renderer.render(this.advectScene,this.fluidCamera,this.velocityB,true);
             this.swapVelocity();
 
             this.boundaryMaterial.uniforms.scale.value = -1.0;
-            this.boundaryMaterial.uniforms.texture.value = this.velocityA;
+            this.boundaryMaterial.uniforms.texture.value = this.velocityA.texture;
             renderer.render(this.boundaryScene,this.fluidCamera,this.velocityB,true);
             this.swapVelocity();
     }
@@ -290,8 +290,8 @@ function Floor(z, color){
             this.diffuseMaterial.uniforms.rBeta.value = 1.0/(4.0 + (dx*dx) * v * dt )
 
             for (var i = 0; i < 0; i ++ ){
-                this.diffuseMaterial.uniforms.x.value = this.velocityA;
-                this.diffuseMaterial.uniforms.b.value = this.velocityA;
+                this.diffuseMaterial.uniforms.x.value = this.velocityA.texture;
+                this.diffuseMaterial.uniforms.b.value = this.velocityA.texture;
                 
 
                 renderer.render(this.diffuseScene,this.fluidCamera,this.velocityB,true);
@@ -302,7 +302,7 @@ function Floor(z, color){
             }
             
             this.boundaryMaterial.uniforms.scale.value = -1.0;
-            this.boundaryMaterial.uniforms.texture.value = this.velocityA;
+            this.boundaryMaterial.uniforms.texture.value = this.velocityA.texture;
             renderer.render(this.boundaryScene,this.fluidCamera,this.velocityB,true);
             this.swapVelocity();
     }
@@ -311,20 +311,20 @@ function Floor(z, color){
             renderer.render(this.eraseScene,this.fluidCamera,this.pressureTexture,true);
             renderer.render(this.eraseScene,this.fluidCamera,this.pressureTexture2,true);
             //compute divergence
-            this.divergenceMaterial.uniforms.velocity.value = this.velocityA;
+            this.divergenceMaterial.uniforms.velocity.value = this.velocityA.texture;
             renderer.render(this.divergenceScene,this.fluidCamera,this.divergenceTexture,true);
 
             // compute pressure
             this.boundaryMaterial.uniforms.scale.value = 1.0;
             this.diffuseMaterial.uniforms.alpha.value = -1 ;
             this.diffuseMaterial.uniforms.rBeta.value = 0.25;
-            this.diffuseMaterial.uniforms.b.value = this.divergenceTexture;
-            for (var i = 0; i <50; i ++ ){
-                this.diffuseMaterial.uniforms.x.value = this.pressureTexture;
+            this.diffuseMaterial.uniforms.b.value = this.divergenceTexture.texture;
+            for (var i = 0; i <15; i ++ ){
+                this.diffuseMaterial.uniforms.x.value = this.pressureTexture.texture;
                 renderer.render(this.diffuseScene,this.fluidCamera,this.pressureTexture2,true);
                 this.swapPressure();
 
-                this.boundaryMaterial.uniforms.texture.value = this.pressureTexture;
+                this.boundaryMaterial.uniforms.texture.value = this.pressureTexture.texture;
                 renderer.render(this.boundaryScene,this.fluidCamera,this.pressureTexture2,true);
                 this.swapPressure();
             
@@ -333,8 +333,8 @@ function Floor(z, color){
 
 
             //subtract pressure
-            this.gradientMaterial.uniforms.velocity.value = this.velocityA;
-            this.gradientMaterial.uniforms.pressure.value = this.pressureTexture;
+            this.gradientMaterial.uniforms.velocity.value = this.velocityA.texture;
+            this.gradientMaterial.uniforms.pressure.value = this.pressureTexture.texture;
             renderer.render(this.gradientScene,this.fluidCamera,this.velocityB,true);
             this.swapVelocity();
 
@@ -349,8 +349,8 @@ function Floor(z, color){
 
             this.advectMaterial.uniforms.timestep.value = dt;
             this.advectMaterial.uniforms.dx.value = dx;
-            this.advectMaterial.uniforms.quantity.value = this.densityA;
-            this.advectMaterial.uniforms.velocity.value = this.velocityA;
+            this.advectMaterial.uniforms.quantity.value = this.densityA.texture;
+            this.advectMaterial.uniforms.velocity.value = this.velocityA.texture;
             
 
             renderer.render(this.advectScene,this.fluidCamera,this.densityB,true);

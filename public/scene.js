@@ -9,7 +9,7 @@ const FAR = 10000;
 const div = document.querySelector('#container');
 
 const renderer = new THREE.WebGLRenderer();
-renderer.shadowMapEnabled = true;
+renderer.shadowMap.enabled = true;
 const camera =
     new THREE.PerspectiveCamera(
         VIEW_ANGLE,
@@ -20,9 +20,8 @@ const camera =
 camera.position.y = 1.0;
 
 const scene = new THREE.Scene();
-var DirectionalLight  = new THREE.PointLight( 0xFFFFFF , 1, 100);
+var DirectionalLight  = new THREE.PointLight( 0xFFFFFF , 1.0, 100);
 DirectionalLight.castShadow = true
-DirectionalLight.shadowDarkness = 0.2;
 DirectionalLight.position.y = 20;
 DirectionalLight.position.x = 3;
 DirectionalLight.position.z = 7;

@@ -7,8 +7,9 @@ function Player(z, color){
 	this.changed = true;
 	this.orientation =  new THREE.Quaternion();
 	this.pathColor = 1;
+	this.radius = 1;
 
-	var geometry = new THREE.SphereGeometry(1, 16,16);
+	var geometry = new THREE.SphereGeometry(this.radius, 16,16);
 	
 	 
 	var material = new THREE.MeshPhongMaterial({map: playerTexture, overdraw: 0.5});

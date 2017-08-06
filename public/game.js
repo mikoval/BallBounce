@@ -13,12 +13,22 @@ function Game(scene, camera){
 
 	this.update = function(){
 
+		this.collisions();
+
 		var val = this.player.update();
 		if(val.hit){
-			this.floor.addColor(this.player.position.x, this.player.position.z, this.player.pathColor)
-			this.floor.addVelocity(this.player.position.x, this.player.position.z, this.player.velocity);
+			//this.floor.addColor(this.player.position.x, this.player.position.z, this.player.pathColor)
+			//this.floor.addVelocity(this.player.position.x, this.player.position.z, this.player.velocity);
 		}
 		this.floor.update();
+		for(var i= 0 ; i < this.objs.length; i++){
+			var val = this.objs[i].update();
+			if(val.hit){
+				this.floor.addColor(this.objs[i].position.x, this.objs[i].position.z, this.objs[i].pathColor)
+				this.floor.addVelocity(this.objs[i].position.x, this.objs[i].position.z, this.objs[i].velocity);
+			}
+
+		}
 		if(this.player.changed){
 			this.setCamera();
 			this.player.changed = false;
@@ -33,6 +43,7 @@ function Game(scene, camera){
 		var angle = -this.player.rotation;
 		position.applyAxisAngle( axis, angle );
 		position.add(this.player.position);
+	
 		camera.position.x = position.x;
 		camera.position.y = position.y;
 		camera.position.z = position.z;
@@ -41,6 +52,51 @@ function Game(scene, camera){
 		
 		
 		this.camera.lookAt(this.player.position); 
+	}
+	this.collisions = function(){
+		var obj = this.player;
+		for(var j = 0; j < this.objs.length; j++){
+			var obj2 = this.objs[j];
+			if(obj.position.distanceTo(obj2.position) < obj.radius + obj2.radius){
+				var p1 = obj.position.clone();
+					var p2 = obj2.position.clone();
+					var n = p2.sub(p1).normalize();
+					var v1 = obj.velocity.clone();
+					var v2 = obj2.velocity.clone();
+					var a1 = v1.dot(n);
+					var a2 = v2.dot(n);
+					var m1 =1
+					var m2 = 1
+					var vel1 = v1.sub( n.multiplyScalar((a1- a2) * 2 * m1 * m2 /(m1 + m2)* m2))
+					var vel2 = v2.add( n.multiplyScalar((a1- a2) * 2 * m1 * m2 /(m1 + m2)* m1))
+					obj.velocity = vel1;
+					obj2.velocity = vel2;
+
+			}
+		}
+
+
+		for(var i =0 ; i < this.objs.length; i++){
+			var obj = this.objs[i];
+			for(var j = i + 1; j < this.objs.length; j++){
+				var obj2 = this.objs[j];
+				if(obj.position.distanceTo(obj2.position) < obj.radius + obj2.radius){
+					var p1 = obj.position.clone();
+					var p2 = obj2.position.clone();
+					var n = p2.sub(p1).normalize();
+					var v1 = obj.velocity.clone();
+					var v2 = obj2.velocity.clone();
+					var a1 = v1.dot(n);
+					var a2 = v2.dot(n);
+					var m1 = 1
+					var m2 = 1
+					var vel1 = v1.sub( n.multiplyScalar((a1- a2) * 2 * m1 * m2 /(m1 + m2)* m2))
+					var vel2 = v2.add( n.multiplyScalar((a1- a2) * 2 * m1 * m2 /(m1 + m2)* m1))
+					obj.velocity = vel1;
+					obj2.velocity = vel2;
+				}
+			}
+		}
 	}
 	
 	
@@ -69,21 +125,30 @@ function Game(scene, camera){
 
 		// add the object to the scene
 		
+		var ball1 = new Ball(2,-5,0xFF0000);
+		var ball2 = new Ball(15,2,0x00FF00);
+		var ball3 = new Ball(-9,-8,0x0000FF);
+		
 	
+		this.objs.push(ball1);
+		this.objs.push(ball2);
+		this.objs.push(ball3);
+
+
 
 }
 var input = {up:false, down:false, left:false, right:false};
-$(document).keypress(function(e) {
-    if(e.key == "w"|| e.key =="up"){
+$(document).keydown(function(e) {
+    if(e.key == "w"|| e.key =="up"|| e.key == "ArrowUp"){
     	input.up = true;
     }
-    if(e.key == "d"|| e.key =="right"){
+    if(e.key == "d"|| e.key =="right"|| e.key == "ArrowRight"){
     	input.right = true;
     }
-    if(e.key == "a"|| e.key =="left"){
+    if(e.key == "a"|| e.key =="left"|| e.key == "ArrowLeft"){
     	input.left = true;
     }
-    if(e.key == "s"|| e.key =="down"){
+    if(e.key == "s"|| e.key =="down"|| e.key == "ArrowDown"){
     	input.down = true;
     }
     if(e.key == " "){
@@ -91,16 +156,16 @@ $(document).keypress(function(e) {
     }
 });
 $(document).keyup(function(e) {
-    if(e.key == "w"|| e.key =="up"){
+    if(e.key == "w"|| e.key =="up" || e.key == "ArrowUp"){
     	input.up = false;
     }
-    if(e.key == "d"|| e.key =="right"){
+    if(e.key == "d"|| e.key =="right" || e.key == "ArrowRight"){
     	input.right = false;
     }
-    if(e.key == "a"|| e.key =="left"){
+    if(e.key == "a"|| e.key =="left"|| e.key == "ArrowLeft"){
     	input.left = false;
     }
-    if(e.key == "s"|| e.key =="down"){
+    if(e.key == "s"|| e.key =="down"|| e.key == "ArrowDown"){
     	input.down = false;
     }
     if(e.key == " "){
