@@ -1,9 +1,12 @@
-var fluidWidth = 256;
-var fluidHeight = 256;
+var fluidWidth = 512;
+var fluidHeight = 512;
  dt = 1/60;
 dx = 1.0;
 dy = 1.0;
-function Floor(z, color){
+function Floor(res, pathsize){
+   
+    fluidWidth =res
+    fluidHeight = res
 	this.velocityA = new THREE.WebGLRenderTarget( fluidWidth , fluidHeight, {depthBuffer: false, stencilBuffer:false, minFilter: THREE.LinearFilter, magFilter: THREE.NearestFilter,type: THREE.HalfFloatType,});
     this.velocityB = new THREE.WebGLRenderTarget( fluidWidth , fluidHeight, {depthBuffer: false, stencilBuffer:false, minFilter: THREE.LinearFilter, magFilter: THREE.NearestFilter, type: THREE.HalfFloatType} );
 	this.divergenceTexture = new THREE.WebGLRenderTarget( fluidWidth , fluidHeight, {depthBuffer: false, stencilBuffer:false,  minFilter: THREE.LinearFilter, magFilter: THREE.NearestFilter,type: THREE.HalfFloatType});
@@ -313,13 +316,13 @@ function Floor(z, color){
             //compute divergence
             this.divergenceMaterial.uniforms.velocity.value = this.velocityA.texture;
             renderer.render(this.divergenceScene,this.fluidCamera,this.divergenceTexture,true);
-
+            
             // compute pressure
             this.boundaryMaterial.uniforms.scale.value = 1.0;
             this.diffuseMaterial.uniforms.alpha.value = -1 ;
             this.diffuseMaterial.uniforms.rBeta.value = 0.25;
             this.diffuseMaterial.uniforms.b.value = this.divergenceTexture.texture;
-            for (var i = 0; i <15; i ++ ){
+            for (var i = 0; i <25; i ++ ){
                 this.diffuseMaterial.uniforms.x.value = this.pressureTexture.texture;
                 renderer.render(this.diffuseScene,this.fluidCamera,this.pressureTexture2,true);
                 this.swapPressure();

@@ -43,8 +43,8 @@ function Ball(x, z, color){
 		
 		this.velocity.y -= 0.3;
 		this.velocity.multiplyScalar(0.99)
-		if(this.velocity.length() >8.0)
-			this.velocity.normalize().multiplyScalar(8.0);
+		if(this.velocity.length() >15.0)
+			this.velocity.normalize().multiplyScalar(15.0);
 
 		this.position = this.position.add(this.velocity.clone().multiplyScalar(0.1));
 		this.changed = true;
@@ -71,6 +71,8 @@ function Ball(x, z, color){
 			this.position.z = 22.25;
 			this.velocity.z *= -0.6;
 		}
+		if(Math.abs(this.velocity.x) < 0.01)this.velocity.x = 0;
+		if(Math.abs(this.velocity.z) < 0.01)this.velocity.z = 0;
 
 		var dir = this.velocity.clone().normalize();
 
@@ -81,7 +83,7 @@ function Ball(x, z, color){
 		var quaternion = new THREE.Quaternion();
 		var v = this.velocity.clone()
 		var rot =  Math.pow((v.x * v.x + v.z * v.z),1.7)
-		console.log(rot);
+		//console.log(rot);
 		//if(rot > 0.5)rot = 0.1;
 		//if(rot < 0.0012) rot = 0;
 		quaternion.setFromAxisAngle(axis,rot);

@@ -26,7 +26,7 @@ DirectionalLight.position.y = 20;
 DirectionalLight.position.x = 3;
 DirectionalLight.position.z = 7;
 
-var AmbientLight  = new THREE.AmbientLight( 0x404040 );
+var AmbientLight  = new THREE.AmbientLight( 0x808080 );
 
 
 scene.add(camera);
@@ -99,7 +99,7 @@ var loader = new THREE.TextureLoader();
   loader.load('green/green_displacement.jpg', function ( texture){
       greenTextureDisplacement= texture;
   })
-function load(){
+function load(res, size){
   
   if(!greenTextureColor || !greenTextureNormal  || !greenTextureSpecular  || !greenTextureDisplacement 
     ||!redTextureColor  || !redTextureNormal  || !redTextureSpecular  || !redTextureDisplacement 
@@ -108,12 +108,11 @@ function load(){
    
   }
   else{
-    game  = new Game(scene, camera);
+
+    game  = new Game(scene, camera,res, size);
   }
 
 }
-load();
-
 
 var game;
   

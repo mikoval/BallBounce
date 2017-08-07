@@ -1,15 +1,16 @@
-function Game(scene, camera){
+function Game(scene, camera, res, pathsize){
+	$(".choose-resolution").hide();
 	this.scene = scene;
 	this.camera = camera;
-	this.floor = new Floor();
+	this.floor = new Floor(res, pathsize);
 	this.player = new Player();
 	this.objs = [];
 	this.lights = []
 	this.camera.position.x = this.player.position.x;
 	this.camera.position.y = this.player.position.y;
 	this.camera.position.z = this.player.position.z;
-	this.camera.position.y += 5;
-	this.camera.position.z += 10;
+	this.camera.position.y += 10;
+	this.camera.position.z += 20;
 
 	this.update = function(){
 
@@ -38,7 +39,7 @@ function Game(scene, camera){
 		
 			
 
-		var position = new THREE.Vector3(0, 10, 15);
+		var position = new THREE.Vector3(0, 20, 30);
 		var axis = new THREE.Vector3( 0, 1, 0 );
 		var angle = -this.player.rotation;
 		position.applyAxisAngle( axis, angle );
@@ -58,17 +59,32 @@ function Game(scene, camera){
 		for(var j = 0; j < this.objs.length; j++){
 			var obj2 = this.objs[j];
 			if(obj.position.distanceTo(obj2.position) < obj.radius + obj2.radius){
-				var p1 = obj.position.clone();
+					var p1 = obj.position.clone();
 					var p2 = obj2.position.clone();
 					var n = p2.sub(p1).normalize();
 					var v1 = obj.velocity.clone();
 					var v2 = obj2.velocity.clone();
+					
+					var v3 = obj.position.clone();
+					var v4 = obj2.position.clone();
+					var p3 = obj.velocity.clone();
+					var p4 = obj2.velocity.clone(); 
+					
+					var v =  v4.sub(v3);
+					var d = p4.sub(p3);
+			
+					if(v.dot(d) >0)
+						continue;
+				
+
+					
+					console.log('hit');
 					var a1 = v1.dot(n);
 					var a2 = v2.dot(n);
-					var m1 =1
+					var m1 =1;
 					var m2 = 1
-					var vel1 = v1.sub( n.multiplyScalar((a1- a2) * 2 * m1 * m2 /(m1 + m2)* m2))
-					var vel2 = v2.add( n.multiplyScalar((a1- a2) * 2 * m1 * m2 /(m1 + m2)* m1))
+					var vel1 = v1.sub( n.multiplyScalar((a1- a2) *( 2 * m1 * m2) /(m1 + m2)* m2))
+					var vel2 = v2.add( n.multiplyScalar((a1- a2) * (2 * m1 * m2) /(m1 + m2)* m1))
 					obj.velocity = vel1;
 					obj2.velocity = vel2;
 
@@ -86,6 +102,20 @@ function Game(scene, camera){
 					var n = p2.sub(p1).normalize();
 					var v1 = obj.velocity.clone();
 					var v2 = obj2.velocity.clone();
+
+					var v3 = obj.position.clone();
+					var v4 = obj2.position.clone();
+					var p3 = obj.velocity.clone();
+					var p4 = obj2.velocity.clone(); 
+					
+					var v =  v4.sub(v3);
+					var d = p4.sub(p3);
+			
+					if(v.dot(d) >0)
+						continue;
+
+					
+
 					var a1 = v1.dot(n);
 					var a2 = v2.dot(n);
 					var m1 = 1
