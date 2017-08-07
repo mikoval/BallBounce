@@ -81,7 +81,7 @@ var loader = new THREE.TextureLoader();
       blueTextureSpecular = texture;
   })
   loader.load('blue/blue_displacement.jpg', function ( texture){
-      blueTextublueisplacement= texture;
+      blueTextureDisplacement= texture;
   })
 
   loader.load('green/green_color.jpg', function ( texture){
@@ -94,11 +94,13 @@ var loader = new THREE.TextureLoader();
       greenTextureSpecular = texture;
   })
   loader.load('green/green_displacement.jpg', function ( texture){
-      greenTextugreenisplacement= texture;
+      greenTextureDisplacement= texture;
   })
 function load(){
   
-  if(greenTextureColor == undefined){
+  if(greenTextureColor == undefined || greenTextureNormal== undefined  || greenTextureSpecular== undefined  || greenTextureDisplacement== undefined 
+    ||redTextureColor == undefined || redTextureNormal == undefined || redTextureSpecular == undefined || redTextureDisplacement== undefined 
+    ||blueTextureColor == undefined || blueTextureNormal== undefined  || blueTextureSpecular== undefined  || blueTextureDisplacement== undefined ){
     setTimeout(function(){ load()}, 100);
    
   }
