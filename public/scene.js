@@ -43,7 +43,7 @@ var loader = new THREE.TextureLoader();
   var  playerTextureNormal;
   var  playerTextureSpecular;
   var  playerTextureReflection;
-
+  var greenTextureColor;
 
 
   loader.load('marble/marble_color.jpg', function ( texture){
@@ -96,12 +96,18 @@ var loader = new THREE.TextureLoader();
   loader.load('green/green_displacement.jpg', function ( texture){
       greenTextugreenisplacement= texture;
   })
+function load(){
+  
+  if(greenTextureColor == undefined){
+    setTimeout(function(){ load()}, 100);
+   
+  }
+  else{
+    game  = new Game(scene, camera);
+  }
 
-setTimeout(function(){
-game = new Game(scene, camera);
-
-
-}, 100);
+}
+load();
 
 
 var game;
