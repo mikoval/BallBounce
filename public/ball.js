@@ -16,7 +16,7 @@ function Ball(x, z, color){
 	}
 	
 
-	var geometry = new THREE.SphereGeometry(this.radius, 16,16);
+	var geometry = new THREE.SphereGeometry(this.radius, 32,32);
 	
 	var material;
 	if(color == 0xFF0000) {
@@ -72,8 +72,23 @@ function Ball(x, z, color){
 			this.velocity.z *= -0.6;
 		}
 
+		var dir = this.velocity.clone().normalize();
 
+		dir.y = 0;
+		var axis = new THREE.Vector3( 0, 1, 0 ).cross(dir).normalize();
+		
+			
+		var quaternion = new THREE.Quaternion();
+		var v = this.velocity.clone()
+		var rot =  Math.pow((v.x * v.x + v.z * v.z),1.7)
+		console.log(rot);
+		//if(rot > 0.5)rot = 0.1;
+		//if(rot < 0.0012) rot = 0;
+		quaternion.setFromAxisAngle(axis,rot);
 
+		this.orientation = quaternion.multiply (this.orientation);
+
+		
 
 
 		var mesh = this.obj;
@@ -83,6 +98,8 @@ function Ball(x, z, color){
 		mesh.rotation.setFromQuaternion(this.orientation);
 
 		return ret;
+
+
 	}
 	
 	

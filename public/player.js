@@ -33,6 +33,7 @@ function Player(z, color){
 		if(this.velocity.length() >8.0)
 			this.velocity.normalize().multiplyScalar(8.0);
 
+
 		this.position = this.position.add(this.velocity.clone().multiplyScalar(0.1));
 		this.changed = true;
 		var ret = {};
@@ -61,6 +62,8 @@ function Player(z, color){
 
 
 
+		if(Math.abs(this.velocity.x)<0.003){this.velocity.x = 0;}
+		if(Math.abs(this.velocity.z)<0.003){this.velocity.z = 0;}
 
 
 		var mesh = this.obj;
