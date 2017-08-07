@@ -37,25 +37,71 @@ renderer.setSize(WIDTH, HEIGHT);
 
 div.appendChild(renderer.domElement);
 
-var playerTexture;
+
 var loader = new THREE.TextureLoader();
-
-function load(){
-  loader.load('octave1.jpg', function ( texture){
-      playerTexture = texture;
-      console.log(playerTexture);
-      if(playerTexture == undefined){
-        load();
-      }
-      else{
-        game = new Game(scene, camera);
-
-      }
+  var  playerTextureColor;
+  var  playerTextureNormal;
+  var  playerTextureSpecular;
+  var  playerTextureReflection;
 
 
+
+  loader.load('marble/marble_color.jpg', function ( texture){
+      playerTextureColor = texture;
   })
-}
-load();
+  loader.load('marble/marble_norm.jpg', function ( texture){
+      playerTextureNormal = texture;
+  })
+  loader.load('marble/marble_gloss.jpg', function ( texture){
+      playerTextureSpecular = texture;
+  })
+  loader.load('marble/marble_reflection.jpg', function ( texture){
+      playerTextureReflection= texture;
+  })
+  loader.load('red/red_color.jpg', function ( texture){
+      redTextureColor = texture;
+  })
+  loader.load('red/red_norm.jpg', function ( texture){
+      redTextureNormal = texture;
+  })
+  loader.load('red/red_gloss.jpg', function ( texture){
+      redTextureSpecular = texture;
+  })
+  loader.load('red/red_displacement.jpg', function ( texture){
+      redTextureDisplacement= texture;
+  })
+
+  loader.load('blue/blue_color.jpg', function ( texture){
+      blueTextureColor = texture;
+  })
+  loader.load('blue/blue_norm.jpg', function ( texture){
+      blueTextureNormal = texture;
+  })
+  loader.load('blue/blue_gloss.jpg', function ( texture){
+      blueTextureSpecular = texture;
+  })
+  loader.load('blue/blue_displacement.jpg', function ( texture){
+      blueTextublueisplacement= texture;
+  })
+
+  loader.load('green/green_color.jpg', function ( texture){
+      greenTextureColor = texture;
+  })
+  loader.load('green/green_norm.jpg', function ( texture){
+      greenTextureNormal = texture;
+  })
+  loader.load('green/green_gloss.jpg', function ( texture){
+      greenTextureSpecular = texture;
+  })
+  loader.load('green/green_displacement.jpg', function ( texture){
+      greenTextugreenisplacement= texture;
+  })
+
+setTimeout(function(){
+game = new Game(scene, camera);
+
+
+}, 100);
 
 
 var game;

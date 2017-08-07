@@ -9,10 +9,10 @@ function Player(z, color){
 	this.pathColor = 1;
 	this.radius = 1;
 
-	var geometry = new THREE.SphereGeometry(this.radius, 16,16);
+	var geometry = new THREE.SphereGeometry(this.radius, 128,128);
 	
 	 
-	var material = new THREE.MeshPhongMaterial({map: playerTexture, overdraw: 0.5});
+	var material = new THREE.MeshPhongMaterial({map: playerTextureColor,transparent: false, normalMap:playerTextureNormal, specularMap: playerTextureSpecular, reflectionMap: playerTextureReflection, overdraw: 0.5});
 	var mesh = new THREE.Mesh(geometry, material);
 	mesh.position.y = this.position.x;
 	mesh.position.y = this.position.y;

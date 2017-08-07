@@ -18,8 +18,17 @@ function Ball(x, z, color){
 
 	var geometry = new THREE.SphereGeometry(this.radius, 16,16);
 	
-	
-	var material = new THREE.MeshPhongMaterial({color:color, overdraw: 0.5});
+	var material;
+	if(color == 0xFF0000) {
+		console.log("red");
+		material = new THREE.MeshPhongMaterial({map:redTextureColor, normalMap: redTextureNormal, overdraw: 0.5});
+	}
+	if(color == 0x00FF00) {
+		material = new THREE.MeshPhongMaterial({map:greenTextureColor, normalMap: greenTextureNormal, overdraw: 0.5});
+	}
+	if(color == 0x0000FF) {
+		material = new THREE.MeshPhongMaterial({map:blueTextureColor, normalMap: blueTextureNormal, overdraw: 0.5});
+	}
 	var mesh = new THREE.Mesh(geometry, material);
 	mesh.position.x = this.position.x;
 	mesh.position.y = this.position.y;
