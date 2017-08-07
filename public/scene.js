@@ -98,9 +98,9 @@ var loader = new THREE.TextureLoader();
   })
 function load(){
   
-  if(greenTextureColor == undefined || greenTextureNormal== undefined  || greenTextureSpecular== undefined  || greenTextureDisplacement== undefined 
-    ||redTextureColor == undefined || redTextureNormal == undefined || redTextureSpecular == undefined || redTextureDisplacement== undefined 
-    ||blueTextureColor == undefined || blueTextureNormal== undefined  || blueTextureSpecular== undefined  || blueTextureDisplacement== undefined ){
+  if(!greenTextureColor || !greenTextureNormal  || !greenTextureSpecular  || !greenTextureDisplacement 
+    ||!redTextureColor  || !redTextureNormal  || !redTextureSpecular  || !redTextureDisplacement 
+    ||!blueTextureColor  || !blueTextureNormal  || !blueTextureSpecular  || !blueTextureDisplacement ){
     setTimeout(function(){ load()}, 100);
    
   }
