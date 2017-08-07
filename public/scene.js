@@ -43,7 +43,10 @@ var loader = new THREE.TextureLoader();
   var  playerTextureNormal;
   var  playerTextureSpecular;
   var  playerTextureReflection;
-  var greenTextureColor;
+  var greenTextureColor, greenTextureNormal,greenTextureSpecular, greenTextureDisplacement,
+    redTextureColor, redTextureNormal, redTextureSpecular, redTextureDisplacement, 
+    blueTextureColor, blueTextureNormal, blueTextureSpecular, blueTextureDisplacement;
+
 
 
   loader.load('marble/marble_color.jpg', function ( texture){
