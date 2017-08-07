@@ -20,7 +20,7 @@ const camera =
 camera.position.y = 1.0;
 
 const scene = new THREE.Scene();
-var DirectionalLight  = new THREE.PointLight( 0xFFFFFF , 1.0, 100);
+var DirectionalLight  = new THREE.PointLight( 0xFFFFFF , 1.0, 300);
 DirectionalLight.castShadow = true
 DirectionalLight.position.y = 20;
 DirectionalLight.position.x = 3;
