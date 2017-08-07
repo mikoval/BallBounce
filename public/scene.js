@@ -104,7 +104,7 @@ function load(res, size){
   if(!greenTextureColor || !greenTextureNormal  || !greenTextureSpecular  || !greenTextureDisplacement 
     ||!redTextureColor  || !redTextureNormal  || !redTextureSpecular  || !redTextureDisplacement 
     ||!blueTextureColor  || !blueTextureNormal  || !blueTextureSpecular  || !blueTextureDisplacement ){
-    setTimeout(function(){ load()}, 100);
+    setTimeout(function(){ load(res, size)}, 300);
    
   }
   else{
@@ -112,6 +112,9 @@ function load(res, size){
     game  = new Game(scene, camera,res, size);
   }
 
+}
+function callLoad(res, size){
+  setTimeout(function(){ load(res, size)}, 300);
 }
 
 var game;
